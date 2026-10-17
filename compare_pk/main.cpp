@@ -1,9 +1,9 @@
-#include <iostream>
-
-using namespace std;
+#include "AdjMatrix.h"
 
 int main()
 {
-    cout << "compare_pk" << endl;
+    AdjMatrix matrix(5);
+    matrix.Print();
+    
     return 1;
 }
