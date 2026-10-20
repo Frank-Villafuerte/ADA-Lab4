@@ -19,7 +19,7 @@ void Util::EdgesIndex(int vertexNum,vector<int>& indexes)
 				indexes.push_back(i*vertexNum+j);
 	}
 }
-void Util::CreateGraph(int vertexNum, int edgeNum, vector<Edge>& outEdges)
+void Util::CreateRandomGraph(int vertexNum, int edgeNum, vector<Edge>& outEdges)
 {
 	if (edgeNum < vertexNum)
 	{
@@ -46,14 +46,29 @@ void Util::CreateGraph(int vertexNum, int edgeNum, vector<Edge>& outEdges)
 	tempMatrix.GetUnconnectedIdx(unconnectedIdx);
 	seed = std::chrono::system_clock::now().time_since_epoch().count();
 	shuffle(unconnectedIdx.begin(), unconnectedIdx.end(), std::default_random_engine(seed));
-	tempMatrix.Print();
+	//tempMatrix.Print();
 	for (int i = 0;i < edgeNum-list.size()&&i<unconnectedIdx.size();i++)
 	{
 		
-		cout << unconnectedIdx[i] << " " << unconnectedIdx[i] / vertexNum << " " << unconnectedIdx[i] % vertexNum << endl;
+		//cout << unconnectedIdx[i] << " " << unconnectedIdx[i] / vertexNum << " " << unconnectedIdx[i] % vertexNum << endl;
 		tempMatrix.AddEdge(unconnectedIdx[i] / vertexNum, unconnectedIdx[i] % vertexNum, distrW(generator));
 		
 	}
-	tempMatrix.Export();
+	for (int i = 0;i < vertexNum;i++)
+	{
+		for (int j = 0;j < i;j++)
+		{
+			int weight = tempMatrix.GetEdgeWeight(i, j);
+			if (weight != -1)
+				outEdges.push_back({i,j,weight});
+		}
+	}
+	//tempMatrix.Export();
 	
+}
+
+int Util::Min(int num1, int num2)
+{
+	if(num1)
+	return 0;
 }

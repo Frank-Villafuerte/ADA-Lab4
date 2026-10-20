@@ -1,4 +1,7 @@
+#pragma once
 #include <vector>
+#include <string>
+#include "types.h"
 
 //Matriz cuenta los vértices desde 0
 class AdjMatrix
@@ -8,9 +11,12 @@ private:
     int mVertexNum;
 public:
     AdjMatrix(int theVertexNum);
-    int GetEdge(int col, int row);
+    int GetEdgeWeight(int theVertex1, int theVertex2);
     bool AddEdge(int theVertex1, int theVertex2, int theWeight);
+    void EraseEdge(int theVertex1, int theVertex2);
+    void EraseCol(int theCol);
     void GetUnconnectedIdx(std::vector<int>& theOutUnconnected);
+    void LoadEdges(std::vector<Edge> theEdges);
     void Print();
-    void Export();
+    void Export(std::string theFilename);
 };
