@@ -9,6 +9,7 @@ struct Forest
     int edge;
     int parent;
 };
+
 void Prim(AdjMatrix inputMatrix,int vertexNum, AdjMatrix& outputMatrix)
 {
     vector<int> visitedVertex;
@@ -38,6 +39,15 @@ void Prim(AdjMatrix inputMatrix,int vertexNum, AdjMatrix& outputMatrix)
     }
     cout << "Prim: " << processedEdgeCount << " aristas." << endl;
 }
+int Find(int node,vector<Forest>& forestList)
+{
+    if (forestList[node].edge == forestList[node].parent)
+    {
+        return node;
+    }
+    forestList[node].parent = Find(forestList[node].parent, forestList);
+    return forestList[node].parent;
+}
 void Kruskal(AdjMatrix inputMatrix, int vertexNum, AdjMatrix& outputMatrix)
 {
     vector<Edge> edgeList;
@@ -62,27 +72,32 @@ void Kruskal(AdjMatrix inputMatrix, int vertexNum, AdjMatrix& outputMatrix)
     for (int i = 0;i < edgeList.size()&&procCount<vertexNum-1;i++)
     {
         processedEdgeCount++;
-        if (forestList[edgeList[i].v].parent != forestList[edgeList[i].w].parent)
+        int parentV = Find(edgeList[i].v,forestList);
+        int parentW = Find(edgeList[i].w, forestList);
+        //if (forestList[edgeList[i].v].parent != forestList[edgeList[i].w].parent)
+        if(parentV!=parentW)
         {
-            int oldParent = forestList[edgeList[i].w].parent;
-            int newParent = forestList[edgeList[i].v].parent;
-            for (Forest& f : forestList)
-            {
-                if (f.parent == oldParent)
-                {
-                    f.parent = newParent;
+            forestList[parentW].parent = parentV;
+            //int oldParent = forestList[edgeList[i].w].parent;
+            //int newParent = forestList[edgeList[i].v].parent;
+            //cout << edgeList[i].v << "->" << edgeList[i].w<<":"<<edgeList[i].weight << endl;
+            //for (Forest& f : forestList)
+            //{
+            //    if (f.parent == oldParent)
+             //   {
+               //     f.parent = newParent;
                     
-                }
+                //}
                 //cout << "{" << f.edge << "," << f.parent << "}" << " ";
-            }
+            //}
             //cout << endl;
             outputMatrix.AddEdge(edgeList[i].v, edgeList[i].w, edgeList[i].weight);
-            outputMatrix.Export("kruskal_step" + to_string(processedEdgeCount) + ".txt");
+            outputMatrix.Export("kruskal_step" + to_string(procCount+1) + ".txt");
             procCount++;
         }
         else
         {
-            //cout << "ciclo" << endl;
+            cout << "ciclo" << endl;
         }
     }
     
@@ -90,13 +105,15 @@ void Kruskal(AdjMatrix inputMatrix, int vertexNum, AdjMatrix& outputMatrix)
 }
 int main()
 {
-    int vertexNum = 6;
-    int edgeNum = 10;
+    int vertexNum = 7;
+    int edgeNum = 11;
     AdjMatrix matrix(vertexNum);
     AdjMatrix mstPrim(vertexNum);
     AdjMatrix mstKruskal(vertexNum);
     vector<Edge> edges;
-    Util::CreateRandomGraph(vertexNum, edgeNum, edges);
+
+    edges = { {0,1,7}, {0,3,5},{1,2,8},{1,3,9},{1,4,7},{2,4,5},{3,4,15},{3,5,6},{4,5,8},{4,6,9},{5,6,11} };
+    //Util::CreateRandomGraph(vertexNum, edgeNum, edges);
     for (Edge edge : edges)
     {
         cout << "(" << (char)(edge.v + 65) << "," << (char)(edge.w+65) << "," << edge.weight << "),";
