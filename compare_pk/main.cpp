@@ -74,30 +74,16 @@ void Kruskal(AdjMatrix inputMatrix, int vertexNum, AdjMatrix& outputMatrix)
         processedEdgeCount++;
         int parentV = Find(edgeList[i].v,forestList);
         int parentW = Find(edgeList[i].w, forestList);
-        //if (forestList[edgeList[i].v].parent != forestList[edgeList[i].w].parent)
         if(parentV!=parentW)
         {
             forestList[parentW].parent = parentV;
-            //int oldParent = forestList[edgeList[i].w].parent;
-            //int newParent = forestList[edgeList[i].v].parent;
-            //cout << edgeList[i].v << "->" << edgeList[i].w<<":"<<edgeList[i].weight << endl;
-            //for (Forest& f : forestList)
-            //{
-            //    if (f.parent == oldParent)
-             //   {
-               //     f.parent = newParent;
-                    
-                //}
-                //cout << "{" << f.edge << "," << f.parent << "}" << " ";
-            //}
-            //cout << endl;
             outputMatrix.AddEdge(edgeList[i].v, edgeList[i].w, edgeList[i].weight);
             outputMatrix.Export("kruskal_step" + to_string(procCount+1) + ".txt");
             procCount++;
         }
         else
         {
-            cout << "ciclo" << endl;
+            //cout << "ciclo" << endl;
         }
     }
     
@@ -105,32 +91,20 @@ void Kruskal(AdjMatrix inputMatrix, int vertexNum, AdjMatrix& outputMatrix)
 }
 int main()
 {
-    int vertexNum = 7;
-    int edgeNum = 11;
+    int vertexNum = 6;
+    int edgeNum = 10;
     AdjMatrix matrix(vertexNum);
     AdjMatrix mstPrim(vertexNum);
     AdjMatrix mstKruskal(vertexNum);
     vector<Edge> edges;
-
-    edges = { {0,1,7}, {0,3,5},{1,2,8},{1,3,9},{1,4,7},{2,4,5},{3,4,15},{3,5,6},{4,5,8},{4,6,9},{5,6,11} };
-    //Util::CreateRandomGraph(vertexNum, edgeNum, edges);
+    Util::CreateRandomGraph(vertexNum, edgeNum, edges);
     for (Edge edge : edges)
-    {
         cout << "(" << (char)(edge.v + 65) << "," << (char)(edge.w+65) << "," << edge.weight << "),";
-    }
     cout << endl;
     matrix.LoadEdges(edges);
     matrix.Export("original.txt");
     cout << "Aristas procesadas:" << endl;
     Kruskal(matrix,vertexNum, mstKruskal);
     Prim(matrix, vertexNum, mstPrim);
-
-    
-    
-   
-
-    
-
-
     return 1;
 }

@@ -67,8 +67,10 @@ void Util::CreateRandomGraph(int vertexNum, int edgeNum, vector<Edge>& outEdges)
 	
 }
 
-int Util::Min(int num1, int num2)
+int Util::Random(int min, int max)
 {
-	if(num1)
-	return 0;
+	random_device device;
+	mt19937 generator(device());
+	uniform_int_distribution<> distr(min, max);
+	return distr(generator);
 }

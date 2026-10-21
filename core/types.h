@@ -7,6 +7,6 @@ struct Edge
 
 	bool operator==(Edge other)
 	{
-		return v == other.v && w == other.w;
+		return v == other.v && w == other.w||v==other.w&&w==other.v;
 	}
 };
