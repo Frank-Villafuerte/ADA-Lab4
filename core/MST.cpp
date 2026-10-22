@@ -9,36 +9,30 @@ void MST::Prim(AdjMatrix inputMatrix, int vertexNum, int startVertexIdx, AdjMatr
     PriorityQueue queue;
     vector<bool> visitedVertex(vertexNum, false);
     visitedVertex[startVertexIdx] = true;
-    vector<int> minWeightIdx(vertexNum, startVertexIdx);
+    for (int j = 0;j < vertexNum;j++)
+        if(!visitedVertex[j]&&inputMatrix.GetEdgeWeight(startVertexIdx,j)!=-1)
+            queue.Enqueue({startVertexIdx,j,inputMatrix.GetEdgeWeight(startVertexIdx,j) });
+    queue.Print();
     int connectedVertex = 1;
     while (connectedVertex < vertexNum)
     {
-        int minTargetIdx = -1;//columna de menor peso
-        int lowerWeight = -1;
-        for (int j = 0; j < vertexNum; j++) {
-            int evalWeight = inputMatrix.GetEdgeWeight(minWeightIdx[j], j);
-            if (!visitedVertex[j] && evalWeight != -1) {
-                if (lowerWeight == -1 || evalWeight < lowerWeight) {
-                    lowerWeight = evalWeight;
-                    minTargetIdx = j;
-                }
-            }
-        }
-        if (minTargetIdx == -1) { cout << "Grafo disconexo";break; }
-        visitedVertex[minTargetIdx] = true;
-        outputMatrix.AddEdge(minWeightIdx[minTargetIdx], minTargetIdx, inputMatrix.GetEdgeWeight(minWeightIdx[minTargetIdx], minTargetIdx));
-        connectedVertex++;
-        for (int i = 0;i < vertexNum;i++)
+        Edge lowest;
+        do
         {
-            if(!visitedVertex[i])
+            if (queue.IsEmpty()) 
             {
-                int actualMinWeight = inputMatrix.GetEdgeWeight(minWeightIdx[i], i);
-                int evalMinWeight = inputMatrix.GetEdgeWeight(minTargetIdx, i);
-                if (evalMinWeight != -1)
-                    if (actualMinWeight == -1 || evalMinWeight < actualMinWeight)
-                        minWeightIdx[i] = minTargetIdx;
+                cout << "Grafo no conexo" << endl;
+                return;
             }
-        }
+            lowest = queue.Pop();
+            queue.Print();
+        } while (visitedVertex[lowest.w]);
+        visitedVertex[lowest.w] = true;
+        outputMatrix.AddEdge(lowest.v, lowest.w, lowest.weight);
+        connectedVertex++;
+        for (int j = 0;j < vertexNum;j++)
+            if (!visitedVertex[j] && inputMatrix.GetEdgeWeight(lowest.w, j) != -1)
+                queue.Enqueue({ lowest.w,j ,inputMatrix.GetEdgeWeight(lowest.w, j) });
     }
 }
 int MST::Find(int node, vector<Forest>& forestList)

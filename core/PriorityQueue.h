@@ -12,5 +12,6 @@ private:
 public:
 	void Enqueue(Edge edge);	
 	Edge Pop();
+	bool IsEmpty();
 	void Print();
 };

@@ -24,6 +24,11 @@ Edge PriorityQueue::Pop()
 	return output;
 }
 
+bool PriorityQueue::IsEmpty()
+{
+	return edgeHeap.empty();
+}
+
 void PriorityQueue::SiftUp(int actualIdx)
 {
 	if (actualIdx == 0)
