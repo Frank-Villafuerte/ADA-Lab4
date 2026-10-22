@@ -12,13 +12,33 @@ struct Forest
 
 void Prim(AdjMatrix inputMatrix,int vertexNum, AdjMatrix& outputMatrix)
 {
-    vector<int> visitedVertex;
+    vector<bool> visitedVertex(vertexNum,false);
+    
     int startVertex = 0;
-    visitedVertex.push_back(startVertex);
+    //visitedVertex.push_back(startVertex);
+    visitedVertex[startVertex] = true;
+    vector<int> minWeight(vertexNum);
+    vector<int> parent(vertexNum);
+    for (int i = 0; i < vertexNum; i++) {
+        minWeight[i] = inputMatrix.GetEdgeWeight(startVertex, i);
+        parent[i] = startVertex;
+    }
     int processedEdgeCount = 0;
-    while (visitedVertex.size() < vertexNum)
+    int connectedVertex = 1;
+    while (connectedVertex < vertexNum)
     {
-        int minRIdx = visitedVertex[0];
+        //int minRIdx = visitedVertex[0];
+        int minRIdx = -1;
+        int lowerWeight = -1;
+        for (int j = 0; j < vertexNum; j++) {
+            if (!visitedVertex[j] && minWeight[j] != -1) {
+                if (lowerWeight == -1 || minWeight[j] < lowerWeight) {
+                    lowerWeight = minWeight[j];
+                    minRIdx = j;
+                }
+            }
+        }
+
         int minCIdx = 0;
         for (int i = 0;i < visitedVertex.size();i++)
             for (int j = 0;j < vertexNum;j++)
@@ -34,7 +54,7 @@ void Prim(AdjMatrix inputMatrix,int vertexNum, AdjMatrix& outputMatrix)
         outputMatrix.AddEdge(minRIdx, minCIdx, inputMatrix.GetEdgeWeight(minRIdx, minCIdx));
         inputMatrix.EraseCol(minCIdx);
         inputMatrix.EraseEdge(minRIdx, minCIdx);
-        visitedVertex.push_back(minCIdx);
+        //visitedVertex.push_back(minCIdx);
         outputMatrix.Export("prim_step" + to_string(visitedVertex.size() - 1) + ".txt");
     }
     cout << "Prim: " << processedEdgeCount << " aristas." << endl;
