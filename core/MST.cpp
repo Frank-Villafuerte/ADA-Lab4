@@ -1,11 +1,12 @@
 #include "MST.h"
-
+#include "PriorityQueue.h"
 #include <iostream>
 #include <algorithm>
 using namespace std;
 
 void MST::Prim(AdjMatrix inputMatrix, int vertexNum, int startVertexIdx, AdjMatrix& outputMatrix)
 {
+    PriorityQueue queue;
     vector<bool> visitedVertex(vertexNum, false);
     visitedVertex[startVertexIdx] = true;
     vector<int> minWeightIdx(vertexNum, startVertexIdx);
@@ -29,11 +30,14 @@ void MST::Prim(AdjMatrix inputMatrix, int vertexNum, int startVertexIdx, AdjMatr
         connectedVertex++;
         for (int i = 0;i < vertexNum;i++)
         {
-            int actualMinWeight = inputMatrix.GetEdgeWeight(minWeightIdx[i], i);
-            int evalMinWeight = inputMatrix.GetEdgeWeight(minTargetIdx, i);
-            if (evalMinWeight != -1)
-                if (actualMinWeight == -1 || evalMinWeight < actualMinWeight)
-                    minWeightIdx[i] = minTargetIdx;
+            if(!visitedVertex[i])
+            {
+                int actualMinWeight = inputMatrix.GetEdgeWeight(minWeightIdx[i], i);
+                int evalMinWeight = inputMatrix.GetEdgeWeight(minTargetIdx, i);
+                if (evalMinWeight != -1)
+                    if (actualMinWeight == -1 || evalMinWeight < actualMinWeight)
+                        minWeightIdx[i] = minTargetIdx;
+            }
         }
     }
 }
