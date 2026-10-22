@@ -10,3 +10,8 @@ struct Edge
 		return v == other.v && w == other.w||v==other.w&&w==other.v;
 	}
 };
+struct Forest
+{
+	int edge;
+	int parent;
+};

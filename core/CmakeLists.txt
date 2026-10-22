@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(core)
 
-add_library(Core STATIC AdjMatrix.cpp Util.cpp AdjList.cpp types.h)
+add_library(Core STATIC AdjMatrix.cpp Util.cpp AdjList.cpp MST.cpp types.h)
 
 target_include_directories(Core PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>

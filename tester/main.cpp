@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include "Util.h"
+#include "MST.h"
 using namespace std;
 void Prim(AdjMatrix inputMatrix, int vertexNum, int startVertex, AdjMatrix& outputMatrix)
 {
@@ -53,9 +54,10 @@ int main()
     int edgeNum;
     AdjMatrix matrix(7);
     AdjMatrix mst(7);
-    matrix.LoadEdges(edgesUnco);
+    matrix.LoadEdges(edges);
     matrix.Export("matrix.txt");
-    Prim(matrix,7,0,mst);
+    //Prim(matrix,7,0,mst);
+    MST::Prim(matrix, 7, 0, mst);
     mst.Export("mstprim.txt");
     cout << endl;
     
