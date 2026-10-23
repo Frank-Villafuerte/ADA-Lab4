@@ -60,7 +60,6 @@ void AdjList::Print()
 }
 void AdjList::Export(std::string filename)
 {
-    
     ofstream file(filename);
     vector<string> lines;
     lines.push_back(to_string(mVertexNum) + " ");
@@ -68,10 +67,17 @@ void AdjList::Export(std::string filename)
     for (int i = 0;i < mVertexNum;i++)
         for (Edge e : mList[i])
         {
-            if (e.w > i)
+            if(mVertexNum<27)
             {
+                if (e.w > i)
+                
                 lines.push_back(string(1, (char)(e.v + 65)) + " " + string(1, (char)(e.w + 65)) + " " + to_string(e.weight) + "\n");
             }
+            else
+            {
+                lines.push_back(to_string(e.v) + " " + to_string(e.w) + " " + to_string(e.weight) + "\n");
+            }
+               
         }
     lines[0] += to_string(edgeCount) + "\n";
     if (file.is_open()) {
@@ -85,5 +91,4 @@ void AdjList::Export(std::string filename)
     else {
         cout << "No se pudo abrir el archivo." << endl;
     }
-
 }

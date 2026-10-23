@@ -104,7 +104,10 @@ void AdjMatrix::Export(string theFilename)
             int weight = mMatrix[i][j];
             if (weight != -1)
             {
-                lines.push_back ( string(1,(char)(i + 65)) + " " +string(1,(char)(j + 65)) +" "+to_string(weight)+"\n");
+                if(mVertexNum<27)
+                    lines.push_back ( string(1,(char)(i + 65)) + " " +string(1,(char)(j + 65)) +" "+to_string(weight)+"\n");
+                else
+                    lines.push_back(to_string(i) + " " + to_string(j) + " " + to_string(weight) + "\n");
                 edgeCount++;
             }
         }
