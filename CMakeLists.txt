@@ -4,6 +4,7 @@ add_subdirectory(core)
 
 add_subdirectory(compare_pk)
 add_subdirectory(exec_time)
+add_subdirectory(data_struct)
 
 add_subdirectory(tester)
 
